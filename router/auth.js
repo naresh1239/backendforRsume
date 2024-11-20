@@ -23,6 +23,7 @@ router.post('/signup', signUpCheckValidation,async(req, res) => {
 
     const { name, email,password } = req.body;
 
+    console.log({ name, email,password })
     if(!name,!email,!password){
      return res.end('error all fields missing')
     }
@@ -32,7 +33,7 @@ router.post('/signup', signUpCheckValidation,async(req, res) => {
      const user = await userModle.findOne({ email })
 
     if(user){
-        return res.end('user with this email already exits')
+        return res.status(500).json({"massage" :'user with this email already exits'})
     }
 
        if(!hashedPassword){
@@ -58,10 +59,7 @@ router.post('/signup', signUpCheckValidation,async(req, res) => {
         });
 
         await newUser.save();
-          sendverificationMail(email,tokan)
-        return res.status(201).json({ message: 'User registered successfully' });
-     
-
+       return sendverificationMail(email,tokan,res)
 });
 
 

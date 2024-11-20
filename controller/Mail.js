@@ -18,9 +18,9 @@ const transporter = nodemailer.createTransport({
 
 
 
-const sendverificationMail = (mailId,token)=>{
+const sendverificationMail = (mailId,token,res)=>{
     console.log(mailId)
-    const link = `<a href="http://localhost:3000/AuthHome/verfiy?email=${mailId}&otp=${token}">http://localhost:3000/verfiy</a>`
+    const link = `<a href="http://localhost:3000/Verfiy?email=${mailId}&otp=${token}">http://localhost:3000/Verfiy</a>`
 
     const mailOptions = {
       from: 'naresh.kumawat159924@gmail.com', // Sender address
@@ -30,8 +30,9 @@ const sendverificationMail = (mailId,token)=>{
   };
 transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-        return console.log('Error occurred:', error);
+      return res.status(201).json({ 'message': error });
     }
+    return res.status(201).json({ 'message': 'User registered successfully and Email sent successfully to your mail id' });
     console.log('Email sent successfully:', info.response);
 });
 }
